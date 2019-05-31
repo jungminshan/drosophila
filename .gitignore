@@ -1,8 +1,4 @@
 /*checkpoints*
 *pycache*
 *DS_Store*
-
-
-# removing untracked files from github:
-# git ls-files -ci --exclude-standard
-# git git ls-files -ci --exclude-standard -z | xargs -0 git rm --cached
+*.txt*
