@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
 from sklearn.metrics import accuracy_score
 from sklearn.utils import shuffle
+import matplotlib.pyplot as plt
 
 tor=0.75
 epochs=50
@@ -103,6 +104,15 @@ def make_data(data, n_bin=6):
     data_midpt = [(data_bin[i]+data_bin[i+1])*0.5 for i in range(n_bin-1)]
     data_deriv = [np.sign(data_bin[i+1]-data_bin[i]) for i in range(n_bin-1)]
     return np.vstack(data_init), np.vstack(data_fin), np.vstack(data_midpt), np.vstack(data_deriv)
+
+def make_deriv(data, boundary=0, n_bin=6):
+    data_bin = np.vsplit(data, n_bin)
+    data_diff = [data_bin[i+1]-data_bin[i] for i in range(n_bin-1)]
+    data_deriv = np.copy(np.vstack(data_diff))
+    data_deriv[data_deriv <= boundary] = -1
+    data_deriv[data_deriv > boundary] = 1
+    return np.vstack(data_diff), data_deriv
+    
 
 def fit(x,y,niter_max=100,regu=0.1):    
     n = x.shape[1]
