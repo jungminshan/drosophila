@@ -8,6 +8,7 @@ from sklearn.model_selection import KFold
 from sklearn.metrics import accuracy_score
 from sklearn.utils import shuffle
 import matplotlib.pyplot as plt
+import pickle
 
 tor=0.75
 epochs=50
