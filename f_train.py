@@ -9,6 +9,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.utils import shuffle
 import matplotlib.pyplot as plt
 import pickle
+import itertools as it
 
 tor=0.75
 epochs=50
