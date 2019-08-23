@@ -5,3 +5,5 @@
 *.pdf*
 *work-in-progress*
 *updated*.py*
+*gitignore*
+*ctns*
