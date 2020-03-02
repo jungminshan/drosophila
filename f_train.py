@@ -10,6 +10,7 @@ from sklearn.utils import shuffle
 import matplotlib.pyplot as plt
 import pickle
 import itertools as it
+from sklearn.metrics import r2_score
 
 tor=0.75
 epochs=50
@@ -65,17 +66,21 @@ def nn_complete(train_data, test_data, comp_ind):
     repeat=[]
     rep_count = 0
     corr_v = [0]*len(incomp_ind)
+    r2_v = [0]*len(incomp_ind)
     ind = 0
     for i in nn_pred_functions.keys():
         test_data[test_row_ind[i],i] = nn_pred_functions[i][0](gene_test_input[test_row_ind[i],:])
         corr = stats.linregress(test_data[train_row_ind[i],i],\
                                       nn_pred_functions[i][0](gene_test_input[train_row_ind[i],:]))[-3]
+        r2 = r2_score(test_data[train_row_ind[i],i],\
+                                      nn_pred_functions[i][0](gene_test_input[train_row_ind[i],:]))
         if corr < tor:
             repeat.append(i)
             train_data[nn_pred_functions[i][1],i] = 0
             test_data[test_row_ind[i],i] = 0
         if corr > tor:
             corr_v[ind] = corr
+            r2_v[ind] = r2
             ind += 1
     while len(repeat) > 0:
 #         print(rep_count)
@@ -88,6 +93,8 @@ def nn_complete(train_data, test_data, comp_ind):
             test_data[test_row_ind[i],i] = nn_pred_functions[i][0](gene_test_input[test_row_ind[i],:])
             corr = stats.linregress(test_data[train_row_ind[i],i],\
                                       nn_pred_functions[i][0](gene_test_input[train_row_ind[i],:]))[-3]
+            r2 = stats.linregress(test_data[train_row_ind[i],i],\
+                                      nn_pred_functions[i][0](gene_test_input[train_row_ind[i],:]))
             if corr < tor:
                 print(i, corr)
                 repeat.append(i)
@@ -95,9 +102,10 @@ def nn_complete(train_data, test_data, comp_ind):
                 test_data[test_row_ind[i],i] = 0
             if corr > tor:
                 corr_v[ind] = corr
+                r2_v[ind] = r2
                 ind += 1
             
-    return corr_v
+    return corr_v, r2
 
 def make_data(data, n_bin=6):
     data_bin = np.vsplit(data, n_bin)

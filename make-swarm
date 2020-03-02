@@ -1,0 +1,6 @@
+rm LAD.cmd
+touch LAD.cmd
+for i in {0..989}
+do
+echo python3 LAD_v.py $i >> LAD.cmd
+done
